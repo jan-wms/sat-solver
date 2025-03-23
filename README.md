@@ -1,1 +1,1 @@
-## Java SAT solver (DPLL)
+## DPLL SAT solver
