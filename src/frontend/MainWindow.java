@@ -46,6 +46,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        String input = inputTextArea.getText();
+        System.out.println(input);
     }
 }
