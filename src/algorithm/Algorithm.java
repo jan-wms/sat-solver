@@ -8,20 +8,27 @@ public class Algorithm {
     int variablesCount;
     int clausesCount;
     List<List<Integer>> cnfList;
+    String result;
 
     public static void main(String[] args) {
         Algorithm algorithm = new Algorithm();
-        String input = "c\n" +
-                "c start with comments\nc\nc \np cnf 5 3\n1 -5 4 0\n-1 5 3 4 0\n-3 -4 0";
+        String input = "c\nc start with comments\nc\nc \np cnf 5 3\n1 -5 4 0\n-1 5 3 4 0\n-3 -4 0";
         algorithm.run(input);
     }
 
     public void run(String input) {
+        variablesCount = -1;
+        clausesCount = -1;
+        cnfList = null;
+        result = null;
+
         getCnfListFromDimacs(input);
+        solve();
     }
 
     public void solve() {
-
+        boolean[] output = solveRecursive();
+        result = output == null ? "UNSAT" : Arrays.toString(output);
     }
 
     public boolean[] solveRecursive(List<List<Integer>> input, boolean[] configuration) {
@@ -43,8 +50,7 @@ public class Algorithm {
             List<List<Integer>> list = new ArrayList<>();
 
             Arrays.stream(lines)
-                    .filter(line -> !line.startsWith("c"))
-                    .filter(line -> !line.startsWith("p"))
+                    .filter(line -> line.endsWith(" 0"))
                     .forEach(line -> {
                         List<Integer> clause = new ArrayList<>();
                         int[] ints = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
